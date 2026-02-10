@@ -26,25 +26,26 @@ export default function StatsPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-grid">
+        <p className="text-sm text-slate-500">{"// loading..."}</p>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="flex min-h-screen flex-col">
+      <div className="relative flex min-h-screen flex-col overflow-hidden bg-grid">
+        <div className="scan-line pointer-events-none" />
         <Navbar />
         <main className="flex flex-1 flex-col items-center justify-center gap-4 px-4">
-          <p className="text-gray-600 dark:text-gray-400">
-            Sign in to view your statistics.
+          <p className="text-sm text-slate-500">
+            {"// authentication required"}
           </p>
           <Link
             href="/auth"
-            className="rounded-xl bg-indigo-500 px-6 py-3 text-sm font-bold text-white hover:bg-indigo-600"
+            className="btn-glow rounded-xl border border-cyan-500/40 bg-cyan-500/15 px-6 py-3 text-sm font-bold tracking-wider text-cyan-400 transition-all hover:bg-cyan-500/25"
           >
-            Sign In
+            SIGN IN
           </Link>
         </main>
       </div>
@@ -52,11 +53,20 @@ export default function StatsPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-grid">
+      <div
+        className="pointer-events-none absolute right-1/4 top-1/4 h-96 w-96 rounded-full opacity-20"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 70%)",
+        }}
+      />
+      <div className="scan-line pointer-events-none" />
+
       <Navbar />
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Your Statistics
+      <main className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
+        <h1 className="text-gradient-cyan text-2xl font-bold uppercase tracking-wider">
+          Statistics
         </h1>
         <Recommendations sessions={sessions} />
         <StatsView sessions={sessions} />

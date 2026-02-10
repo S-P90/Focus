@@ -4,8 +4,15 @@ import { useState } from "react";
 import { useTimer } from "@/contexts/TimerContext";
 
 export default function ActionButtons() {
-  const { status, clockIn, clockOut, startBreak, endBreak, deductTime, reset } =
-    useTimer();
+  const {
+    status,
+    clockIn,
+    clockOut,
+    startBreak,
+    endBreak,
+    deductTime,
+    reset,
+  } = useTimer();
   const [showDeduct, setShowDeduct] = useState(false);
   const [deductMinutes, setDeductMinutes] = useState("");
 
@@ -23,10 +30,13 @@ export default function ActionButtons() {
       <div className="flex flex-col items-center gap-4">
         <button
           onClick={clockIn}
-          className="rounded-2xl bg-emerald-500 px-12 py-5 text-xl font-bold text-white shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-600 hover:shadow-emerald-500/40 active:scale-95"
+          className="btn-glow rounded-2xl border border-emerald-500/40 bg-emerald-500/15 px-14 py-5 text-xl font-bold tracking-wider text-emerald-400 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_30px_rgba(52,211,153,0.2)] active:scale-95"
         >
-          Clock In
+          CLOCK IN
         </button>
+        <span className="text-xs text-slate-600">
+          press to start tracking
+        </span>
       </div>
     );
   }
@@ -36,37 +46,37 @@ export default function ActionButtons() {
       <div className="flex flex-col items-center gap-4">
         <button
           onClick={reset}
-          className="rounded-2xl bg-indigo-500 px-12 py-5 text-xl font-bold text-white shadow-lg shadow-indigo-500/25 transition-all hover:bg-indigo-600 active:scale-95"
+          className="btn-glow rounded-2xl border border-violet-500/40 bg-violet-500/15 px-14 py-5 text-xl font-bold tracking-wider text-violet-400 transition-all hover:bg-violet-500/25 hover:shadow-[0_0_30px_rgba(167,139,250,0.2)] active:scale-95"
         >
-          New Session
+          NEW SESSION
         </button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-5">
       <div className="flex flex-wrap justify-center gap-3">
         {status === "running" ? (
           <button
             onClick={startBreak}
-            className="rounded-xl bg-amber-500 px-8 py-4 text-lg font-bold text-white shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-600 active:scale-95"
+            className="btn-glow rounded-xl border border-amber-500/40 bg-amber-500/15 px-8 py-4 text-lg font-bold tracking-wider text-amber-400 transition-all hover:bg-amber-500/25 hover:shadow-[0_0_24px_rgba(251,191,36,0.2)] active:scale-95"
           >
-            Take Break
+            BREAK
           </button>
         ) : (
           <button
             onClick={endBreak}
-            className="rounded-xl bg-emerald-500 px-8 py-4 text-lg font-bold text-white shadow-lg shadow-emerald-500/25 transition-all hover:bg-emerald-600 active:scale-95"
+            className="btn-glow rounded-xl border border-emerald-500/40 bg-emerald-500/15 px-8 py-4 text-lg font-bold tracking-wider text-emerald-400 transition-all hover:bg-emerald-500/25 hover:shadow-[0_0_24px_rgba(52,211,153,0.2)] active:scale-95"
           >
-            Resume
+            RESUME
           </button>
         )}
         <button
           onClick={clockOut}
-          className="rounded-xl bg-rose-500 px-8 py-4 text-lg font-bold text-white shadow-lg shadow-rose-500/25 transition-all hover:bg-rose-600 active:scale-95"
+          className="btn-glow rounded-xl border border-rose-500/40 bg-rose-500/15 px-8 py-4 text-lg font-bold tracking-wider text-rose-400 transition-all hover:bg-rose-500/25 hover:shadow-[0_0_24px_rgba(251,113,133,0.2)] active:scale-95"
         >
-          Clock Out
+          CLOCK OUT
         </button>
       </div>
 
@@ -75,34 +85,34 @@ export default function ActionButtons() {
           {!showDeduct ? (
             <button
               onClick={() => setShowDeduct(true)}
-              className="rounded-lg border border-gray-300 px-5 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-rose-300 hover:text-rose-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-rose-700 dark:hover:text-rose-400"
+              className="rounded-lg border border-slate-700 px-5 py-2 text-xs font-medium tracking-wide text-slate-500 transition-all hover:border-rose-500/30 hover:text-rose-400"
             >
-              Lost Focus? Subtract Time
+              LOST FOCUS? SUBTRACT TIME
             </button>
           ) : (
-            <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-3 dark:bg-gray-900">
+            <div className="glass flex items-center gap-2 rounded-xl p-3">
               <input
                 type="number"
                 min="1"
-                placeholder="Minutes lost"
+                placeholder="min"
                 value={deductMinutes}
                 onChange={(e) => setDeductMinutes(e.target.value)}
-                className="w-28 rounded-lg border border-gray-300 px-3 py-2 text-center text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="futuristic w-24 rounded-lg px-3 py-2 text-center text-sm"
                 autoFocus
                 onKeyDown={(e) => e.key === "Enter" && handleDeduct()}
               />
               <button
                 onClick={handleDeduct}
-                className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white hover:bg-rose-600"
+                className="rounded-lg border border-rose-500/40 bg-rose-500/15 px-4 py-2 text-xs font-bold tracking-wide text-rose-400 transition-all hover:bg-rose-500/25"
               >
-                Deduct
+                DEDUCT
               </button>
               <button
                 onClick={() => {
                   setShowDeduct(false);
                   setDeductMinutes("");
                 }}
-                className="rounded-lg px-3 py-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                className="px-3 py-2 text-xs text-slate-600 hover:text-slate-400"
               >
                 Cancel
               </button>

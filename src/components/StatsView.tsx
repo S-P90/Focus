@@ -25,10 +25,9 @@ export default function StatsView({ sessions }: StatsViewProps) {
 
   if (sessions.length === 0) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center dark:border-gray-800 dark:bg-gray-900">
-        <p className="text-gray-500 dark:text-gray-400">
-          No sessions saved yet. Complete a focus session and save it to see your
-          statistics here.
+      <div className="glass rounded-2xl p-8 text-center">
+        <p className="text-sm text-slate-500">
+          {"// no sessions saved yet. Complete a focus session and save it to see statistics here."}
         </p>
       </div>
     );
@@ -36,13 +35,13 @@ export default function StatsView({ sessions }: StatsViewProps) {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <StatsBlock title="This Week" stats={weekStats} />
-      <StatsBlock title="This Month" stats={monthStats} />
-      <StatsBlock title="All Time" stats={allTimeStats} />
+      <StatsBlock title="THIS WEEK" stats={weekStats} />
+      <StatsBlock title="THIS MONTH" stats={monthStats} />
+      <StatsBlock title="ALL TIME" stats={allTimeStats} />
 
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-        <h3 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">
-          Recent Sessions
+      <div className="glass rounded-2xl p-6">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-cyan-400">
+          {"// recent_sessions"}
         </h3>
         <div className="flex flex-col gap-2">
           {sessions
@@ -52,17 +51,17 @@ export default function StatsView({ sessions }: StatsViewProps) {
             .map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3 dark:bg-gray-800"
+                className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3"
               >
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <p className="text-sm font-medium text-slate-200">
                     {new Date(s.startTime).toLocaleDateString(undefined, {
                       weekday: "short",
                       month: "short",
                       day: "numeric",
                     })}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-slate-500">
                     {new Date(s.startTime).toLocaleTimeString(undefined, {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -75,10 +74,10 @@ export default function StatsView({ sessions }: StatsViewProps) {
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  <p className="text-sm font-bold text-emerald-400">
                     {formatMinutes(s.productiveTime / 60000)}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-slate-500">
                     {s.totalElapsed > 0
                       ? Math.round(
                           (s.productiveTime / s.totalElapsed) * 100
@@ -140,12 +139,12 @@ function StatsBlock({
   stats: AggregatedStats;
 }) {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-      <h3 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">
-        {title}
+    <div className="glass rounded-2xl p-6">
+      <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-cyan-400">
+        {"// " + title.toLowerCase().replace(" ", "_")}
       </h3>
       {stats.sessionCount === 0 ? (
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-slate-500">
           No sessions in this period.
         </p>
       ) : (
@@ -164,7 +163,7 @@ function StatsBlock({
           <MiniStat
             label="Efficiency"
             value={`${stats.avgEfficiency}%`}
-            color="indigo"
+            color="violet"
           />
         </div>
       )}
@@ -179,20 +178,31 @@ function MiniStat({
 }: {
   label: string;
   value: string;
-  color?: "emerald" | "amber" | "indigo";
+  color?: "emerald" | "amber" | "violet";
 }) {
-  const colors = {
-    emerald: "text-emerald-600 dark:text-emerald-400",
-    amber: "text-amber-600 dark:text-amber-400",
-    indigo: "text-indigo-600 dark:text-indigo-400",
+  const borderColors = {
+    emerald: "border-emerald-500/20",
+    amber: "border-amber-500/20",
+    violet: "border-violet-500/20",
+  };
+  const textColors = {
+    emerald: "text-emerald-400",
+    amber: "text-amber-400",
+    violet: "text-violet-400",
   };
   return (
-    <div className="rounded-xl bg-gray-50 p-3 text-center dark:bg-gray-800">
-      <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+    <div
+      className={`rounded-xl border bg-slate-900/50 p-3 text-center ${
+        color ? borderColors[color] : "border-slate-700/50"
+      }`}
+    >
+      <p className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
         {label}
       </p>
       <p
-        className={`text-lg font-bold ${color ? colors[color] : "text-gray-900 dark:text-gray-100"}`}
+        className={`text-lg font-bold ${
+          color ? textColors[color] : "text-slate-200"
+        }`}
       >
         {value}
       </p>

@@ -13,17 +13,17 @@ export default function Recommendations({ sessions }: RecommendationsProps) {
   if (tips.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-6 dark:border-indigo-900 dark:bg-indigo-950/50">
-      <h3 className="mb-3 text-lg font-bold text-indigo-900 dark:text-indigo-100">
-        Focus Recommendations
+    <div className="glass rounded-2xl border-violet-500/10 p-6">
+      <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-violet-400">
+        {"// focus_recommendations"}
       </h3>
       <ul className="flex flex-col gap-2">
         {tips.map((tip, i) => (
           <li
             key={i}
-            className="flex items-start gap-2 text-sm text-indigo-800 dark:text-indigo-200"
+            className="flex items-start gap-2 text-sm text-slate-300"
           >
-            <span className="mt-0.5 text-indigo-500">&#9679;</span>
+            <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-violet-400" />
             {tip}
           </li>
         ))}

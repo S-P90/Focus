@@ -33,7 +33,7 @@ export default function SessionSummary() {
 
   const handleSave = () => {
     if (!user || !session) return;
-    const saved: SavedSession = {
+    const data: SavedSession = {
       id: session.id,
       userId: user.id,
       startTime: session.startTime,
@@ -43,56 +43,94 @@ export default function SessionSummary() {
       totalDeducted: stats.totalDeducted,
       productiveTime: stats.productiveTime,
     };
-    saveSession(saved);
+    saveSession(data);
     setSaved(true);
   };
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-      <h2 className="mb-4 text-center text-lg font-bold text-gray-900 dark:text-gray-100">
-        Session Summary
+    <div className="glass w-full max-w-md rounded-2xl p-6">
+      <h2 className="text-gradient-cyan mb-4 text-center text-sm font-bold uppercase tracking-wider">
+        {"// session_report"}
       </h2>
 
       <div className="mb-4 grid grid-cols-2 gap-3">
-        <StatCard label="Total Time" value={formatMinutes(totalMin)} />
+        <StatCard label="TOTAL" value={formatMinutes(totalMin)} />
         <StatCard
-          label="Productive"
+          label="PRODUCTIVE"
           value={formatMinutes(productiveMin)}
-          highlight="emerald"
+          color="emerald"
         />
-        <StatCard label="Breaks" value={formatMinutes(breakMin)} highlight="amber" />
         <StatCard
-          label="Deducted"
+          label="BREAKS"
+          value={formatMinutes(breakMin)}
+          color="amber"
+        />
+        <StatCard
+          label="DEDUCTED"
           value={formatMinutes(deductedMin)}
-          highlight="rose"
+          color="rose"
         />
       </div>
 
-      <div className="mb-4 flex items-center justify-center gap-2">
-        <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-          {efficiency}%
+      {/* Efficiency ring */}
+      <div className="mb-4 flex flex-col items-center gap-1">
+        <div className="relative flex h-20 w-20 items-center justify-center">
+          <svg width="80" height="80" className="absolute">
+            <circle
+              cx="40"
+              cy="40"
+              r="34"
+              fill="none"
+              stroke="rgba(167,139,250,0.1)"
+              strokeWidth="3"
+            />
+          </svg>
+          <svg
+            width="80"
+            height="80"
+            className="absolute"
+            style={{ transform: "rotate(-90deg)" }}
+          >
+            <circle
+              cx="40"
+              cy="40"
+              r="34"
+              fill="none"
+              stroke="#a78bfa"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray={2 * Math.PI * 34}
+              strokeDashoffset={2 * Math.PI * 34 * (1 - efficiency / 100)}
+              style={{ filter: "drop-shadow(0 0 4px rgba(167,139,250,0.5))" }}
+            />
+          </svg>
+          <span className="text-lg font-bold text-violet-400">
+            {efficiency}%
+          </span>
         </div>
-        <div className="text-sm text-gray-500">efficiency</div>
+        <span className="text-[10px] uppercase tracking-widest text-slate-500">
+          efficiency
+        </span>
       </div>
 
       {user ? (
         <button
           onClick={handleSave}
           disabled={saved}
-          className="w-full rounded-xl bg-indigo-500 py-3 text-sm font-bold text-white transition-all hover:bg-indigo-600 disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-700"
+          className="btn-glow w-full rounded-xl border border-cyan-500/40 bg-cyan-500/15 py-3 text-xs font-bold tracking-wider text-cyan-400 transition-all hover:bg-cyan-500/25 disabled:border-slate-700 disabled:bg-slate-800/50 disabled:text-slate-500"
         >
-          {saved ? "Session Saved!" : "Save Session"}
+          {saved ? "SESSION SAVED" : "SAVE SESSION"}
         </button>
       ) : (
-        <div className="rounded-xl bg-indigo-50 p-4 text-center dark:bg-indigo-950/50">
-          <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">
-            Create an account to save sessions and view statistics.
+        <div className="rounded-xl border border-cyan-500/10 bg-cyan-500/5 p-4 text-center">
+          <p className="mb-2 text-xs text-slate-500">
+            {"// create account to save sessions & view stats"}
           </p>
           <Link
             href="/auth"
-            className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
+            className="text-sm font-semibold text-cyan-400 transition-colors hover:text-cyan-300"
           >
-            Sign up for free &rarr;
+            Sign up free &rarr;
           </Link>
         </div>
       )}
@@ -103,24 +141,35 @@ export default function SessionSummary() {
 function StatCard({
   label,
   value,
-  highlight,
+  color,
 }: {
   label: string;
   value: string;
-  highlight?: "emerald" | "amber" | "rose";
+  color?: "emerald" | "amber" | "rose";
 }) {
-  const colors = {
-    emerald: "text-emerald-600 dark:text-emerald-400",
-    amber: "text-amber-600 dark:text-amber-400",
-    rose: "text-rose-600 dark:text-rose-400",
+  const borderColors = {
+    emerald: "border-emerald-500/20",
+    amber: "border-amber-500/20",
+    rose: "border-rose-500/20",
+  };
+  const textColors = {
+    emerald: "text-emerald-400",
+    amber: "text-amber-400",
+    rose: "text-rose-400",
   };
   return (
-    <div className="rounded-xl bg-gray-50 p-3 text-center dark:bg-gray-800">
-      <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+    <div
+      className={`rounded-xl border bg-slate-900/50 p-3 text-center ${
+        color ? borderColors[color] : "border-slate-700/50"
+      }`}
+    >
+      <p className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
         {label}
       </p>
       <p
-        className={`text-lg font-bold ${highlight ? colors[highlight] : "text-gray-900 dark:text-gray-100"}`}
+        className={`text-lg font-bold ${
+          color ? textColors[color] : "text-slate-200"
+        }`}
       >
         {value}
       </p>
